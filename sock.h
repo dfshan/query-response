@@ -5,5 +5,6 @@
 
 int open_clientfd(char *hostname, char *port);
 int open_listenfd(int port);
+int send_data(int sockfd, size_t send_size, char *buff);
 
 #endif

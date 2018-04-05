@@ -89,4 +89,22 @@ int open_listenfd(int port)
 	}
 	return listenfd;
 }
+
+#define MAX_SEND_SIZE 1048576
+#define MIN(X,Y) ((X) < (Y) ? (X) : (Y))
+int send_data(int sockfd, size_t send_size, char *send_buff) {
+	ssize_t sent_out, send_left;
+	send_left = send_size;
+	while (send_left > 0) {
+		send_size = MIN(MAX_SEND_SIZE, send_left);
+		sent_out = send(sockfd, send_buff, send_size, 0);
+		if(sent_out <= 0) {
+			perror("send()");
+			return -1;
+		} else {
+			send_left -= sent_out;
+		}
+	}
+	return 0;
+}
 /* $end open_listenfd */
